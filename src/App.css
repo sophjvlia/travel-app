@@ -1,0 +1,24 @@
+body {
+  min-height: unset !important;
+  justify-content: center;
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.trip_form {
+  background-color: #DED6C9;
+  padding: 1rem 1.2rem !important;
+}
+
+.trip_form form .form-label {
+  color: #4A0404;
+  font-weight: bold;
+}
+
+.date .date_input {
+  width: 48%;
+}
