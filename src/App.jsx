@@ -24,7 +24,7 @@ export function Layout() {
     <>
       <Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="/trip/add">Travel App</Navbar.Brand>
+          <Navbar.Brand href="/trips">Travel App</Navbar.Brand>
           {isAuthenticated ? (
             <>
               <Nav className="d-flex justify-content-end pe-3 w-100">
