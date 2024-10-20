@@ -16,7 +16,7 @@ export default function Login() {
     e.preventDefault();
     if (username === 'sophie@sigmaschool.co' && password === 'password') {
       dispatch(login({ username, password }));
-      navigate('/trip/add');
+      navigate('/trips');
     } else {
       setError('Please enter a valid username and password');
     }

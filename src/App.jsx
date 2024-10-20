@@ -4,6 +4,7 @@ import { store } from './store'
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Home from './pages/Home'
 import AddTrip from './pages/AddTrip'
 import ViewTrip from './pages/ViewTrip'
 import Login from './pages/Login'
@@ -25,7 +26,14 @@ export function Layout() {
         <Container>
           <Navbar.Brand href="/trip/add">Travel App</Navbar.Brand>
           {isAuthenticated ? (
-            <Button onClick={handleLogout}>Logout</Button>
+            <>
+              <Nav className="d-flex justify-content-end pe-3 w-100">
+                <Nav.Link href="/trip/add">
+                  Add Trip
+                </Nav.Link>
+              </Nav>
+              <Button onClick={handleLogout}>Logout</Button>
+            </>
           ) : (
             <Nav>
               <Nav.Link href="/login">
@@ -53,7 +61,7 @@ const AuthGuard = ({ element }) => {
 const HomeRedirect = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   
-  return <Navigate to={isAuthenticated ? "/trip/add" : "/login"} />;
+  return <Navigate to={isAuthenticated ? "/trips" : "/login"} />;
 };
 
 function App() {
@@ -63,6 +71,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeRedirect />} />
           <Route path="/" element={<Layout/>}>
+            <Route path="/trips" element={<AuthGuard element={<Home/>}/>}/>
             <Route path="/trip/add" element={<AuthGuard element={<AddTrip/>}/>}/>
             <Route path="/trip/view/:id" element={<AuthGuard element={<ViewTrip/>}/>}/>
             <Route path="login" element={<Login/>}/>
