@@ -10,6 +10,22 @@ const tripSlice = createSlice({
       state.tripList.push(action.payload);
       localStorage.setItem('trips', JSON.stringify(state.tripList));
     },
+    editTrip: (state, action) => { 
+      const { id, tripName, tripDestination, dateFrom, dateTo } = action.payload;
+      const tripIndex = state.tripList.findIndex((trip) => trip.id === id);
+
+      if (tripIndex !== -1) {
+        state.tripList[tripIndex] = {
+          ...state.tripList[tripIndex],
+          tripName,
+          tripDestination,
+          dateFrom,
+          dateTo,
+        };
+      }
+
+      localStorage.setItem('trips', JSON.stringify(state.tripList));
+    },
     addToItinerary: (state, action) => {
       const { tripId, itinerary } = action.payload;
       const trip = state.tripList.find((trip) => trip.id === tripId);
@@ -35,9 +51,27 @@ const tripSlice = createSlice({
         (trip) => trip.id !== action.payload
       );
       localStorage.setItem('trips', JSON.stringify(state.tripList));
-    }
+    },
+    deleteItinerary: (state, action) => {
+      const { tripId, itineraryId } = action.payload;
+      const tripIndex = state.tripList.findIndex((trip) => trip.id === tripId);
+      if (tripIndex !== -1) {
+        const updatedItineraries = state.tripList[tripIndex].itineraries.filter((itinerary) => itinerary.id !== itineraryId);
+        const updatedTrip = {
+          ...state.tripList[tripIndex],
+          itineraries: updatedItineraries
+        };
+        const updatedTripList = [
+          ...state.tripList.slice(0, tripIndex),
+          updatedTrip,
+          ...state.tripList.slice(tripIndex + 1),
+        ];
+        state.tripList = updatedTripList;
+        localStorage.setItem('trips', JSON.stringify(updatedTripList));
+      }
+    },
   },
 });
 
-export const { addToTrip, addToItinerary, editItinerary, deleteTrip } = tripSlice.actions;
+export const { addToTrip, editTrip, addToItinerary, editItinerary, deleteTrip, deleteItinerary } = tripSlice.actions;
 export default tripSlice.reducer;

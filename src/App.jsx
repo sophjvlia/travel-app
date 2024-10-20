@@ -50,11 +50,18 @@ const AuthGuard = ({ element }) => {
   return element;
 };
 
+const HomeRedirect = () => {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  
+  return <Navigate to={isAuthenticated ? "/trip/add" : "/login"} />;
+};
+
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<HomeRedirect />} />
           <Route path="/" element={<Layout/>}>
             <Route path="/trip/add" element={<AuthGuard element={<AddTrip/>}/>}/>
             <Route path="/trip/view/:id" element={<AuthGuard element={<ViewTrip/>}/>}/>

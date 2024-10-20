@@ -50,8 +50,10 @@ export default function AddTrip() {
       remarks: itineraryRemarks,
     };
     dispatch(addToItinerary({ tripId: currentTripId, itinerary: newItinerary }));
+    setItineraryDate('');
+    setItineraryName('');
+    setItineraryRemarks('');
     closeModal();
-    navigate('/trip/add');
   };
 
   const deleteTripFromList = (tripId) => {

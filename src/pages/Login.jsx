@@ -51,6 +51,11 @@ export default function Login() {
           Login
         </Button>
       </Form>
+      <div className="bg-success rounded rounded-full p-3 mt-4 text-white">
+        <h5>Credentials</h5>
+        <p className="m-0">Username: sophie@sigmaschool.co</p>
+        <p className="m-0">Password: password</p>
+      </div>
     </Container>
   );
 }
