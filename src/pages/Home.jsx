@@ -45,9 +45,9 @@ export default function AddTrip() {
     <>
       <div className="my-5 container">
         {tripList.length === 0 ? (
-            <div className="text-center">
+          <div className="text-center">
             <p>No trips at the moment.</p>
-            </div>
+          </div>
         ) : (
         tripList.map((trip) => (
           <Card className="w-100 mb-4" key={trip.id}>
