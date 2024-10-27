@@ -22,6 +22,7 @@ export default function ViewTrip() {
   const [dateTo, setDateTo] = useState(trip.dateTo);
   const [timers, setTimers] = useState(Array(trip.itineraries?.length || 0).fill(0));
   const [timerIntervals, setTimerIntervals] = useState(Array(trip.itineraries?.length || 0).fill(null));
+  const [countries, setCountries] = useState([]);
 
   if (!trip) {
     return <div>Trip not found!</div>;
@@ -135,6 +136,23 @@ export default function ViewTrip() {
     }
   }, [timerIntervals]);
 
+  useEffect(() => {
+    async function fetchCountries() {
+      try {
+        const url = "https://countriesnow.space/api/v0.1/countries/info?returns=name";
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCountries(data.data);
+      } catch (error) {
+        console.log("Error fetching data:", error.message);
+      }
+    }
+    fetchCountries();
+  }, []);
+
   return (
     <Container className="mt-5">
       <Card className="w-100">
@@ -213,7 +231,19 @@ export default function ViewTrip() {
                   </Form.Group>
                   <Form.Group className="mb-3">
                     <Form.Label>Destination</Form.Label>
-                    <Form.Control type="text" value={tripDestination} onChange={(e) => setTripDestination(e.target.value)} />
+                    <Form.Control
+                      as="select" 
+                      value={tripDestination}
+                      onChange={(e) => setTripDestination(e.target.value)}
+                      required
+                    >
+                      <option value="">Select a country</option>
+                      {countries.map((country, index) => (
+                        <option key={index} value={country.name}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group className="mb-3">
                     <Form.Label>Date From</Form.Label>
