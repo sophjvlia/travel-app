@@ -1,5 +1,5 @@
 import { Container, Form, Button, Card, Modal } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addToTrip, addToItinerary, deleteTrip } from '../features/trip/tripSlice';
@@ -15,6 +15,7 @@ export default function AddTrip() {
   const [itineraryName, setItineraryName] = useState('');
   const [itineraryDate, setItineraryDate] = useState(''); 
   const [itineraryRemarks, setItineraryRemarks] = useState(''); 
+  const [countries, setCountries] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { tripList } = useSelector((state) => state.trip);
@@ -60,6 +61,23 @@ export default function AddTrip() {
     dispatch(deleteTrip(tripId));
   };
 
+  useEffect(() => {
+    async function fetchCountries() {
+      try {
+        const url = "https://countriesnow.space/api/v0.1/countries/info?returns=name";
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCountries(data.data);
+      } catch (error) {
+        console.log("Error fetching data:", error.message);
+      }
+    }
+    fetchCountries();
+  }, []);
+  
   return (
     <>
       <Container className="mt-4">
@@ -77,11 +95,18 @@ export default function AddTrip() {
             <Form.Group className="mb-3">
               <Form.Label>Destination:</Form.Label>
               <Form.Control
-                type="text"
+                as="select" 
                 value={tripDestination}
                 onChange={(e) => setTripDestination(e.target.value)}
                 required
-              />
+              >
+                <option value="">Select a country</option>
+                {countries.map((country, index) => (
+                  <option key={index} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <div className="date d-flex justify-content-between mb-5">
               <Form.Group className="date_input">
@@ -92,6 +117,7 @@ export default function AddTrip() {
                   onChange={(e) => setDateFrom(e.target.value)}
                   required
                 />
+                <small className="ms-1 fst-italic">Please click on the calendar icon to enable the date picker</small>
               </Form.Group>
               <Form.Group className="date_input">
                 <Form.Label>To:</Form.Label>
@@ -101,6 +127,7 @@ export default function AddTrip() {
                   onChange={(e) => setDateTo(e.target.value)}
                   required
                 />
+                <small className="ms-1 fst-italic">Please click on the calendar icon to enable the date picker</small>
               </Form.Group>
             </div>
             <Button type="submit" className="btn btn-primary w-25">

@@ -20,8 +20,8 @@ export default function ViewTrip() {
   const [tripDestination, setTripDestination] = useState(trip.tripDestination);
   const [dateFrom, setDateFrom] = useState(trip.dateFrom);
   const [dateTo, setDateTo] = useState(trip.dateTo);
-  const [timers, setTimers] = useState(Array(trip.itineraries.length).fill(0));
-  const [timerIntervals, setTimerIntervals] = useState(Array(trip.itineraries.length).fill(null));
+  const [timers, setTimers] = useState(Array(trip.itineraries?.length || 0).fill(0));
+  const [timerIntervals, setTimerIntervals] = useState(Array(trip.itineraries?.length || 0).fill(null));
 
   if (!trip) {
     return <div>Trip not found!</div>;
