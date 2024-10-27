@@ -239,7 +239,7 @@ export default function ViewTrip() {
                     >
                       <option value="">Select a country</option>
                       {countries.map((country, index) => (
-                        <option key={index} value={country.name}>
+                        <option key={index} value={country.name} selected={tripDestination == country.name}>
                           {country.name}
                         </option>
                       ))}
